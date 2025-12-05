@@ -11,22 +11,24 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x, 24.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - name: Checkout a repo
       uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+
+    - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 18
         cache: 'npm'
+
+    - name: Use npm 9 (works with lockfileVersion 3)
+      run: npm install -g npm@9
+
     - run: npm ci
-    - run: npm run build --if-present
+
+    - name: Build project
+      run: npm run build --if-present
+
     - run: npm test
