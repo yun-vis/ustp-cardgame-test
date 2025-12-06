@@ -26,5 +26,12 @@ jobs:
     - name: Run Tests # need to run test before build
       run: npm test # same as npm run test
 
+    - name: Upload Test Results
+      if: always() # Run this even if tests fail, so we can see WHAT failed
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: test-results/results.xml
+
     - name: Build project
       run: npm run build --if-present
