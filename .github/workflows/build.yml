@@ -23,5 +23,8 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Run Tests # need to run test before build
+      run: npm test # same as npm run test
+
     - name: Build project
       run: npm run build --if-present
