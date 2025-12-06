@@ -18,12 +18,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-
-  # Deployment job
-  deploy:      
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build: # Build job
 
     runs-on: ubuntu-latest
 
@@ -40,18 +35,30 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    # - name: Run Tests # need to run test before build
-    #   run: npm test # same as npm run test
+    - name: Run Tests # need to run test before build
+      run: npm test # same as npm run test
 
-    # - name: Upload Test Results
-    #   if: always() # Run this even if tests fail, so we can see WHAT failed
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: test-results
-    #     path: test-results/results.xml
+    - name: Upload Test Results
+      if: always() # Run this even if tests fail, so we can see WHAT failed
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: test-results/results.xml
 
     - name: Build project
       run: npm run build 
+
+  # Deployment job
+  deploy:      
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
 
     - name: Setup Pages
       uses: actions/configure-pages@v5
