@@ -48,6 +48,14 @@ jobs:
     - name: Build project
       run: npm run build 
 
+    - name: Setup Pages
+      uses: actions/configure-pages@v5
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: './dist' # Vite builds to the 'dist' folder
+        
   # Deployment job
   deploy:      
     environment:
@@ -59,14 +67,6 @@ jobs:
     needs: build
 
     steps:
-
-    - name: Setup Pages
-      uses: actions/configure-pages@v5
-
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: './dist' # Vite builds to the 'dist' folder
 
     - name: Deploy to GitHub Pages
       id: deployment
