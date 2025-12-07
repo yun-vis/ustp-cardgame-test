@@ -1,0 +1,44 @@
+name: Create Specific Release Branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: 'The full name of the release branch to create (e.g., release/1.0.0)'
+        required: true
+        default: 'release/1.0.0'
+
+jobs:
+  create_release_branch:
+
+    name: Create Release
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: 'master'
+          # This line ensures the runner has write access to create a branch
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Git
+        run: |
+          # Configure Git to use the GitHub Actions bot identity
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+
+      - name: Create and Push New Release Branch
+        id: create_branch
+        run: |
+          BRANCH_NAME="${{ github.event.inputs.branch_name }}"
+          echo "Attempting to create branch: $BRANCH_NAME"          
+
+          # Create the new branch from the current HEAD (which is the latest 'main')
+          git branch $BRANCH_NAME
+          
+          # Push the new branch to GitHub
+          git push origin $BRANCH_NAME
+          
+          echo "Branch '$BRANCH_NAME' successfully created from main."  
