@@ -5,6 +5,7 @@ on:
     # Trigger the workflow when a new tag is pushed to the repository
     tags:
       - 'v*' 
+  workflow_dispatch:
 
 jobs:
   build:
