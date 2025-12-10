@@ -4,8 +4,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "globals"
 
-  - package-ecosystem: "devcontainers"
-    directory: "/"
-    schedule:
-      interval: "weekly"
+  # - package-ecosystem: "devcontainers"
+  #   directory: "/"
+  #   schedule:
+  #     interval: "weekly"
