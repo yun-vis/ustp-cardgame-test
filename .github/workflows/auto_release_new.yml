@@ -1,4 +1,4 @@
-name: Automatic GitHub Release
+name: Automatic GitHub Release New
 
 on:
   push:
@@ -33,8 +33,8 @@ jobs:
       - name: Create zip archive
         run: |
           cd dist
-          Compress-Archive -Path * -DestinationPath ../release.zip
-        shell: powershell
+          zip -r ../release.zip .
+        shell: bash
 
       - name: Extract Version Tag
         id: get_version
